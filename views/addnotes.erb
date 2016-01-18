@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>Reading Tracker</title>
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+</head>
+<body>
+    <h1><a href="/">Reading Tracker</a> : Add notes</h1>
+    <form action="/add/notes/finished" method="post">
+        <div>
+            <label for="book">Book:</label>
+            <p id="book"><%= @book['title'] %></p>
+        </div>
+        <div>
+            <input type="hidden" name="isbn" value="<%= @book['isbn'] %>"/>
+        </div>
+        <div>
+            <select id="sections" name="section">
+            <% for @s in @book['sections'] do %>
+                <option value="<%= @s['id'] %>"><%= @s['name'] %></option>
+            <% end %>
+            </select>
+        <div>
+            <label for="notes">Notes:</label>
+            <textarea id="notes" name="notes"></textarea>
+        </div>
+        <div class="button">
+            <button type="submit">OK</button>
+        </div>
+    </form>
+</body>
+</html>

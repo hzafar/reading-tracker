@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>Reading Tracker</title>
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+</head>
+<body>
+    <h1><a href="/">Reading Tracker</a> : Add a new book</h1>
+    <form action="/add/book" method="post">
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title"/>
+        </div>
+        <div>
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author"/>
+        </div>
+        <div>
+            <label for="isbn">ISBN:</label>
+            <input type="text" id="isbn" name="isbn"/>
+        </div>
+        <div class="button">
+            <button type="submit">OK</button>
+        </div>
+    </form>
+</body>
+</html>

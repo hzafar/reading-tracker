@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>Reading Tracker</title>
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+</head>
+<body>
+    <h1><a href="/">Reading Tracker</a></h1>
+    <form action="<%= @next %>" method="post">
+        <div>
+            <label for="books">Book:</label>
+            <select id="books" name="isbn">
+                <% for @book in @books do %>
+                    <option value="<%= @book['isbn'] %>"><%= @book['title'] %></option>
+                <% end %>
+            </select>
+        </div>
+        <div class="button">
+            <button type="submit">OK</button>
+        </div>
+    </form>
+</body>
+</html>

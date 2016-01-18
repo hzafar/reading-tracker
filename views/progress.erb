@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>Reading Tracker</title>
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+</head>
+<body>
+    <h1><a href="/">Reading Tracker</a> : View progess</h1>
+    <div>
+        <% for @book in @data do %>
+        <% @total = 0 %>
+        <% @finished = 0 %>
+        <div class="bookSummary">
+            <hr width="200%"/>
+            <h3><%= @book['book']['title'] %></h3>
+            <% for @section in @book['sections'] do %>
+            <% @total += 1 %>
+            <div class="sectionSummary">
+                <div class="sectionName"><%= @section['section']['name'] %></div>
+                <% if @section['notes'].empty? %>
+                    <p><em>Unread</em></p>
+                <% else %>
+                    <% @finished += 1 %>
+                    <p><em>Finished</em></p>
+                    <p><u>Notes:</u></p>
+                    <% for @note in @section['notes'] do %>
+                        <p class="sectionNotes">
+                            <%= @note['notes'] %>
+                            <em>(<%= @note['timestamp'].strftime("%Y-%m-%d") %>)</em>
+                        </p>
+                    <% end %>
+                <% end %>
+            </div>
+        <% end %>
+        </div>
+        <div class="sectionFinished">
+            <p>Finished <%= @finished %> out of <%= @total %></p>
+        </div>
+        <% end %>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<html>
+<head>
+    <title>Reading Tracker</title>
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+</head>
+<body>
+    <h1><a href="/">Reading Tracker</a> : Add sections for a book</h1>
+    <form action="/add/sections/finished" method="post">
+        <div>
+            <label for="book">Book:</label>
+            <p id="book"><%= @book['title'] %></p>
+        </div>
+        <div>
+            <input type="hidden" name="isbn" value="<%= @book['isbn'] %>"/>
+        </div>
+        <div>
+            <label for="sections">Enter section names, one per line.</label>
+            <textarea id="sections" name="sections"></textarea>
+        </div>
+        <div class="button">
+            <button type="submit">OK</button>
+        </div>
+    </form>
+</body>
+</html>
