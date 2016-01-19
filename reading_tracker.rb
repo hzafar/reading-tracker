@@ -21,11 +21,12 @@ post '/add/book' do
     if params['isbn'].empty? || params['title'].empty? || params['author'].empty?
         halt 'Cannot specify empty values for any of title, author, or ISBN!'
     else
-        r.table('books').insert({'isbn' => params['isbn'],
+        @result = r.table('books').insert({'isbn' => params['isbn'],
                                  'title' => params['title'],
                                  'author' => params['author']},
                                 { 'conflict' => 'update' }).run(Connection)
-        redirect to('/')
+        #redirect to('/')
+        erb :redirect
     end
 end
 
@@ -49,9 +50,10 @@ post '/add/sections/finished' do
                     }
     }
 
-    r.table('sections').insert(sections).run(Connection)
+    @result = r.table('sections').insert(sections).run(Connection)
         
-    redirect to('/')
+    #redirect to('/')
+    erb :redirect
 end
 
 get '/add/notes' do
@@ -72,12 +74,13 @@ post '/add/notes/next' do
 end
 
 post '/add/notes/finished' do
-    r.table('finished').insert({ 'notes' => params['notes'],
+    @result = r.table('finished').insert({ 'notes' => params['notes'],
                                        'section_id' => params['section'],
                                        'timestamp' => r.now()
                                      }).run(Connection)
 
-    redirect to('/')
+    #redirect to('/')
+    erb :redirect
 end
 
 get '/view/progress' do
