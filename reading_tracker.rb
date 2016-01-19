@@ -1,10 +1,13 @@
-#!/usr/bin/ruby1.9.1
-
+require 'openssl'
 require 'rethinkdb'
 require 'sinatra'
 
 r = RethinkDB::RQL.new
-Connection = r.connect(:host => 'localhost', :port => 28015, :db => 'litdb')
+Connection = r.connect(:host => ENV["RDB_HOST_NAME"],
+                       :port => ENV["RDB_PORT"],
+                       :auth_key => ENV["RDB_AUTH_KEY"],
+                       :ssl => { :ca_certs => ENV["RDB_CERT"] },
+                       :db => ENV["RDB_DBNAME"])
 
 get '/' do
     erb :mainpage
