@@ -11,5 +11,14 @@
     a section to record that you've finished reading it, or <a href="/view/progress">view your reading progress</a>.
     Happy reading!
     </p>
+    <br/>
+    <br/>
+    <br/>
+    <h3>>> Progress Summary:</h3>
+    <p>
+    <% for @c in @counts.values do %>
+        <strong><%= @c['title'] %></strong>: finished <%= @c['read'] %> out of <%= @c['total'] %><br/>
+    <% end %>
+    </p>
 </body>
 </html>

@@ -10,6 +10,23 @@ Connection = r.connect(:host => ENV["RDB_HOST_NAME"],
                        :db => ENV["RDB_DBNAME"])
 
 get '/' do
+    @counts =
+    r.table('sections').map { |section|
+        { 'isbn' => section['book'],
+          'title' => r.table('books').get(section['book']).pluck('title'),
+          'count' => r.table('finished').get_all(section['id'],
+                                                 {:index => 'section_id'}
+                                       ).count().do { |x|
+                                           r.branch(x.ge(1), 1, 0)
+                                       }
+        }
+    }.group('isbn').do { |x|
+        { 'title' => x['title']['title'][0],
+          'read' => x.sum('count'),
+          'total' => x.count()
+        }
+    }.run(Connection)
+     
     erb :mainpage
 end
 
@@ -38,7 +55,6 @@ end
 
 post '/add/sections/next' do
     @book = r.table('books').get(params['isbn']).run(Connection)
-    p @book
     erb :addsections
 end
 
@@ -92,7 +108,7 @@ get '/view/progress' do
             }.map { |s|
                 {   'section' => s, 
                     'notes' => r.table('finished').get_all(
-                        s['id'], {index: 'section_id'}
+                        s['id'], {:index => 'section_id'}
                     ).coerce_to('array')
                 }
             }.coerce_to('array')
