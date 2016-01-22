@@ -2,12 +2,15 @@ require 'openssl'
 require 'rethinkdb'
 require 'sinatra'
 
+options = {}
+options[:host] = ENV["RDB_HOST_NAME"]
+options[:port] = ENV["RDB_PORT"]
+options[:db] = ENV["RDB_DBNAME"]
+options[:auth_key] = ENV["RDB_AUTH_KEY"] if ENV.include?("RDB_AUTH_KEY")
+options[:ssl] = { :ca_certs => ENV["RDB_CERT"] } if ENV.include?("RDB_CERT")
+
 r = RethinkDB::RQL.new
-Connection = r.connect(:host => ENV["RDB_HOST_NAME"],
-                       :port => ENV["RDB_PORT"],
-                       :auth_key => ENV["RDB_AUTH_KEY"],
-                       :ssl => { :ca_certs => ENV["RDB_CERT"] },
-                       :db => ENV["RDB_DBNAME"])
+Connection = r.connect(options)
 
 get '/' do
     @counts =
@@ -42,7 +45,6 @@ post '/add/book' do
                                  'title' => params['title'],
                                  'author' => params['author']},
                                 { 'conflict' => 'update' }).run(Connection)
-        #redirect to('/')
         erb :redirect
     end
 end
@@ -68,7 +70,6 @@ post '/add/sections/finished' do
 
     @result = r.table('sections').insert(sections).run(Connection)
         
-    #redirect to('/')
     erb :redirect
 end
 
@@ -95,7 +96,6 @@ post '/add/notes/finished' do
                                        'timestamp' => r.now()
                                      }).run(Connection)
 
-    #redirect to('/')
     erb :redirect
 end
 
